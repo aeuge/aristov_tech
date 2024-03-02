@@ -1,0 +1,102 @@
+gcloud beta compute --project=celtic-house-266612 instances create postgres --zone=us-central1-a --machine-type=e2-medium --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=933982307116-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --boot-disk-size=30GB --boot-disk-type=pd-ssd --boot-disk-device-name=postgres --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+
+gcloud compute ssh postgres
+
+-- ставим постгрес 16
+sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16 unzip atop
+
+pg_lsclusters
+
+-- MVCC
+sudo -u postgres psql
+
+SELECT txid_current();
+-- работает автокоммит
+show transaction isolation level;
+SELECT txid_current();
+DROP TABLE IF EXISTS test;
+CREATE TABLE test(i int);
+INSERT INTO test VALUES (100),(200);
+
+BEGIN;
+INSERT INTO test VALUES (300); --0
+INSERT INTO test VALUES (400); --1
+COMMIT;
+
+SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'test';
+SELECT txid_current();
+UPDATE test set i = 301 WHERE i = 300;
+
+-- посмотрим что теперь
+SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'test';
+
+SELECT * FROM test;
+SELECT xmin,xmax,cmin,cmax,ctid FROM test;
+
+
+-- установим расширение для доступа к бинарым данным
+-- https://www.postgresql.org/docs/current/pageinspect.html
+CREATE EXTENSION pageinspect;
+\dx+
+SELECT lp as tuple, t_xmin, t_xmax, t_field3 as t_cid, t_ctid FROM heap_page_items(get_raw_page('test',0));
+
+tuple | t_xmin | t_xmax | t_cid | t_ctid
+-------+--------+--------+-------+--------
+    3 |    748 |    749 |     0 | (0,5)
+-- ctid (0,5) - 0 это номер страницы, 5 - позиция следующей живой записи
+
+
+-- чтобы достать хранимые данные, нужно заморочиться побитным сдвигом...
+SELECT  lp as tuple, 
+        t_xmin, 
+        t_xmax, 
+        t_field3 as t_cid, 
+        t_ctid, 
+        get_byte(t_data, 0)::bigint as byte0, 
+        get_byte(t_data, 1) as byte1, 
+        get_byte(t_data, 2) as byte2, 
+        get_byte(t_data, 3) as byte3,
+        get_byte(t_data, 0)::bigint + get_byte(t_data, 1)*2^8  + get_byte(t_data, 2)*2^16  + get_byte(t_data, 3)*2^24 as value
+FROM heap_page_items(get_raw_page('test',0));
+
+SELECT * FROM heap_page_items(get_raw_page('test',0)) \gx
+
+SELECT '(0,'||lp||')' AS ctid,
+       CASE lp_flags
+         WHEN 0 THEN 'unused'
+         WHEN 1 THEN 'normal'
+         WHEN 2 THEN 'redirect to '||lp_off
+         WHEN 3 THEN 'dead'
+       END AS state,
+       t_xmin as xmin,
+       t_xmax as xmax,
+       (t_infomask & 256) > 0  AS xmin_commited,
+       (t_infomask & 512) > 0  AS xmin_aborted,
+       (t_infomask & 1024) > 0 AS xmax_commited,
+       (t_infomask & 2048) > 0 AS xmax_aborted,
+       t_ctid
+FROM heap_page_items(get_raw_page('test',0)) \gx
+
+-- попробуем изменить данные и откатить транзакцию и посмотреть
+BEGIN;
+UPDATE test set i = 201 WHERE i = 200;
+ROLLBACK;
+
+SELECT xmin,xmax,cmin,cmax,ctid FROM test;
+-- видим, что xmax так и остался, но запись актуальна. посмотрим на флаг отмены xmax
+-- ну и записей 6
+
+vacuum test;
+
+-- как узнать номер страницы с данными по ctid
+-- https://dba.stackexchange.com/questions/65964/how-do-i-decompose-ctid-into-page-and-row-numbers
+SELECT (ctid::text::point)[0]::int                              --  25 ms
+     , right(split_part(ctid::text, ',', 1), -1)::int           --  28 ms
+     , ltrim(split_part(ctid::text, ',', 1), '(')::int          --  29 ms
+     , (translate(ctid::text,'()', '{}')::int[])[1]             --  45 ms
+     , (replace(replace(ctid::text,'(','{'),')','}')::int[])[1] --  51 ms
+     , substring(right(ctid::text, -1), '^\d+')::int            --  52 ms
+     , substring(ctid::text, '^\((\d+),')::int                  -- 143 ms
+FROM   test;
+
+gcloud compute instances delete postgres
