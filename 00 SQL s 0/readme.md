@@ -9,7 +9,7 @@
 
 ### План
 01. [Реляционная модель данных](https://youtu.be/3EZIKII6SKg) [статья](https://aristov.tech/blog/relational-model/)
-02. Основы проектирования - 3 нормальная форма
+02. [Основы проектирования - 3 нормальная форма](https://youtu.be/H9z4LHy7Rp4) [статья](https://aristov.tech/blog/normalnye-formy-proektirovanie/)
 03. Первичный ключ (естественный и искусственный) и внешний ключ
 04. SEQUENCE
 05. Язык SQL и его основные конструкции
