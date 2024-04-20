@@ -12,7 +12,7 @@
 01. [Реляционная модель данных](https://youtu.be/3EZIKII6SKg) [статья](https://aristov.tech/blog/relational-model/)
 02. [Основы проектирования - 3 нормальная форма](https://youtu.be/H9z4LHy7Rp4) [статья](https://aristov.tech/blog/normalnye-formy-proektirovanie/)
 03. [Первичный ключ (естественный и искусственный) и внешний ключ](https://youtu.be/sDRJOdYVn6M) [статья](https://aristov.tech/blog/pervichnyj-i-vneshnij-klyuchi-postgresql/)
-04. SEQUENCE
+04. [SEQUENCE](https://youtu.be/WKsxn5vJHag) [статья](https://aristov.tech/blog/sequence-postgresql/)
 05. Язык SQL и его основные конструкции
 06. Варианты NoSQL решений и отличие от РСУБД
 07. Варианты установки Постгреса
