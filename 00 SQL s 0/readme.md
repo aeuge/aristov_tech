@@ -40,4 +40,3 @@
 29. MVCC
 30. Уровни изоляции транзакций
 
-![Обложка](https://github.com/aeuge/postgres16book/blob/main/cover.png)
