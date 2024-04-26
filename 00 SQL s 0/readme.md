@@ -13,7 +13,7 @@
 02. [Основы проектирования - 3 нормальная форма](https://youtu.be/H9z4LHy7Rp4) [статья](https://aristov.tech/blog/normalnye-formy-proektirovanie/)
 03. [Первичный ключ (естественный и искусственный) и внешний ключ](https://youtu.be/sDRJOdYVn6M) [статья](https://aristov.tech/blog/pervichnyj-i-vneshnij-klyuchi-postgresql/)
 04. [SEQUENCE](https://youtu.be/WKsxn5vJHag) [статья](https://aristov.tech/blog/sequence-postgresql/)
-05. Язык SQL и его основные конструкции
+05. [Язык SQL и его основные конструкции](https://youtu.be/AVfTJXLBLLw) [статья](https://aristov.tech/blog/osnovy-postgresql/)
 06. Варианты NoSQL решений и отличие от РСУБД
 07. Варианты установки Постгреса
 08. Подключение извне к кластеру
@@ -39,3 +39,5 @@
 28. Функции работы с датой/строками/цифрами
 29. MVCC
 30. Уровни изоляции транзакций
+
+![Обложка](https://github.com/aeuge/postgres16book/blob/main/cover.png)
