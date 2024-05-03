@@ -1,0 +1,202 @@
+gcloud beta compute --project=celtic-house-266612 instances create postgres --zone=us-central1-a --machine-type=e2-medium --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=933982307116-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --boot-disk-size=20GB --boot-disk-type=pd-ssd --boot-disk-device-name=postgres --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+
+gcloud compute ssh postgres
+
+-- ставим постгрес 16
+sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16 unzip atop htop pgtop
+sudo su postgres
+cd ~ && wget https://storage.googleapis.com/thaibus/thai_small.tar.gz && tar -xf thai_small.tar.gz && psql < thai.sql
+
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'admin123#';";
+echo "listen_addresses = '10.128.15.196'" | sudo tee -a /etc/postgresql/16/main/postgresql.conf
+echo "host all all 10.0.0.0/8 scram-sha-256" | sudo tee -a /etc/postgresql/16/main/pg_hba.conf
+sudo pg_ctlcluster 16 main restart
+
+-- проверим доступ
+psql -U postgres -h localhost -p 5432 -d postgres -W
+SELECT * from pg_stat_activity;
+
+
+-- 2 VM for python scripts
+gcloud beta compute --project=celtic-house-266612 instances create python --zone=us-central1-a --machine-type=e2-medium --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=933982307116-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-ssd --boot-disk-device-name=python --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+
+gcloud compute ssh python
+
+sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y && sudo DEBIAN_FRONTEND=noninteractive apt install git python3 python3-dotenv python3-pip libpq-dev -y
+sudo pip3 install sqlalchemy psycopg
+
+
+git clone https://github.com/aeuge/PythonPostgresCli && cd PythonPostgresCli/src
+
+/* -- если кто хочет исполнение в докере для тестов
+-- докер
+curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh && rm get-docker.sh && sudo usermod -aG docker $USER && newgrp docker
+-- докер композ
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose up
+*/
+
+python3 pg_tester.py
+-- DB_URL='postgresql+psycopg://{}:{}@{}/{}'.format(env['POSTGRES_USER'], env['POSTGRES_PASSWORD'], env['POSTGRES_HOST'], env['POSTGRES_DB'])
+cat > ~/PythonPostgresCli/src/.env << EOL
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=admin123#
+POSTGRES_HOST=10.128.15.196
+POSTGRES_DB=thai
+EOL
+
+-- 10 idle коннектов по умолчанию
+python3 pg_tester.py
+
+
+-- Гипотезы для проверки:
+-- затруднение обслуживающих процессов (vacuum)
+-- при наличии только операций чтения
+pg_lsclusters
+
+-- 1 terminal
+-- idle
+sudo -u postgres psql
+SELECT txid_current();
+DROP TABLE IF EXISTS records;
+CREATE TABLE records(id serial, filler text);
+-- 1 kk insert
+\timing
+INSERT INTO records(filler) SELECT '123' FROM generate_series(1, 1000000) id;
+
+postgres=# \dt+
+                                    List of relations
+ Schema |  Name   | Type  |  Owner   | Persistence | Access method |  Size  | Description
+--------+---------+-------+----------+-------------+---------------+--------+-------------
+ public | records | table | postgres | permanent   | heap          | 35 MB |
+(1 row)
+
+
+BEGIN;
+SELECT count(*) FROM records;
+
+--2 terminal
+sudo -u postgres psql
+
+SELECT txid_current();
+VACUUM records;
+VACUUM FULL records; -- требует эксклюзивной блокировки
+
+-- 1 terminal
+ROLLBACK;
+BEGIN;
+DELETE FROM records WHERE id < 100000;
+SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'records';
+SELECT txid_current();
+
+--2 terminal
+VACUUM ANALYZE records;
+
+-- посмотрим что теперь
+-- 1 terminal
+SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'records';
+VACUUM ANALYZE records;
+-- ERROR:  VACUUM cannot run inside a transaction block
+ROLLBACK;
+
+-- теперь сделаем выборку в 1 сессии, а удалим во 2
+BEGIN;
+SELECT count(*) FROM records;
+
+--2 terminal
+DELETE FROM records WHERE id < 100000;
+VACUUM ANALYZE records;
+
+
+-- при наличии пишущих транзакций
+-- 1 terminal
+ROLLBACK;
+BEGIN;
+UPDATE records SET filler = 'test' WHERE id = 222222;
+
+--2 terminal
+VACUUM ANALYZE records;
+SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'records';
+
+-- 1 terminal
+COMMIT;
+
+--2 terminal
+SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'records';
+
+
+-- НО! -- мы будем мешать другой пишущей нагрузке!!!
+-- плюс необходимо учитывать области видимости незавершенных транзакций!
+-- 1 terminal
+BEGIN;
+UPDATE records SET filler = 'test2' WHERE id = 222222;
+
+-- 2 terminal
+ROLLBACK;
+BEGIN;
+UPDATE records SET filler = 'test3' WHERE id = 222222;
+
+
+-- а если повысить уровень изоляции транзакций?
+SELECT * from pg_stat_activity;
+
+SELECT * from pg_locks;
+
+
+-- https://github.com/aeuge/PythonPostgresCli
+-- 1 terminal
+sudo -u postgres pg_top
+-- python terminal
+-- 10 idle коннектов по умолчанию
+python3 pg_tester.py
+
+-- 100 клиентов
+python3 pg_tester.py -c 100
+-- connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  sorry, too many clients already %)
+python3 pg_tester.py -c 90
+
+-- idle in T
+python3 pg_tester.py -c 90 -T IdleInTransaction
+
+
+python3 pg_tester.py -c 90 -T SelectOne
+
+-- 2 terminal
+SELECT * from pg_stat_activity;
+SELECT count(*) from pg_stat_activity;
+select * from pg_locks;
+SELECT count(*) from pg_locks;
+
+-- поменяем на 10 select 1 в секунду - 900 запросов
+nano clients/Client.py
+
+-- Запрос случайной поездки
+import random
+select * from book.bus where id = " + str(random.randint(1, 5000000)) + ";"
+
+select * from pg_locks;
+
+-- что с таблицей блокировок и pg_stat_activity?
+-- повышенное потребление памяти?
+-- снижение производительности?
+sudo su postgres
+cd
+pgbench -i -s 10 postgres
+
+python3 pg_tester.py -c 80 -T SelectOne
+
+pgbench -P 1 -c 10 -j 2 -T 10 postgres
+
+
+-- можно склонировать и добавить опций по исследованию
+-- https://github.com/aeuge/PythonPostgresCli/blob/master/src/clients/Client.py
+
+-- освобождается ли work_mem после завершения запроса? транзакции?
+-- будет отдельное исследование на тяжелом запросе и анализе выделения памяти
+-- если кому интересно, можете провести исследование и оформить на гитхабе - оставлю ваше авторство и в подарок книга или скидка на курс
+
+
+gcloud compute instances delete postgres
+gcloud compute instances delete python
