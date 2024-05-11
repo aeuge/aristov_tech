@@ -8,7 +8,7 @@ sudo su postgres
 cd ~ && wget https://storage.googleapis.com/thaibus/thai_small.tar.gz && tar -xf thai_small.tar.gz && psql < thai.sql
 
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'admin123#';";
-echo "listen_addresses = '10.128.15.196'" | sudo tee -a /etc/postgresql/16/main/postgresql.conf
+echo "listen_addresses = '10.128.0.6, 127.0.0.1'" | sudo tee -a /etc/postgresql/16/main/postgresql.conf
 echo "host all all 10.0.0.0/8 scram-sha-256" | sudo tee -a /etc/postgresql/16/main/pg_hba.conf
 sudo pg_ctlcluster 16 main restart
 
@@ -43,7 +43,7 @@ python3 pg_tester.py
 cat > ~/PythonPostgresCli/src/.env << EOL
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=admin123#
-POSTGRES_HOST=10.128.15.196
+POSTGRES_HOST=10.128.0.6
 POSTGRES_DB=thai
 EOL
 
@@ -84,6 +84,7 @@ SELECT txid_current();
 VACUUM records;
 VACUUM FULL records; -- требует эксклюзивной блокировки
 
+-- пишущая нагрузка
 -- 1 terminal
 ROLLBACK;
 BEGIN;
@@ -185,7 +186,7 @@ sudo su postgres
 cd
 pgbench -i -s 10 postgres
 
-python3 pg_tester.py -c 80 -T SelectOne
+python3 pg_tester.py -c 90 -T SelectOne
 
 pgbench -P 1 -c 10 -j 2 -T 10 postgres
 
