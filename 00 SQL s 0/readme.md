@@ -14,7 +14,7 @@
 03. [Первичный ключ (естественный и искусственный) и внешний ключ](https://youtu.be/sDRJOdYVn6M) [статья](https://aristov.tech/blog/pervichnyj-i-vneshnij-klyuchi-postgresql/)
 04. [SEQUENCE](https://youtu.be/WKsxn5vJHag) [статья](https://aristov.tech/blog/sequence-postgresql/)
 05. [Язык SQL и его основные конструкции](https://youtu.be/AVfTJXLBLLw) [статья](https://aristov.tech/blog/osnovy-postgresql/)
-06. Варианты NoSQL решений и отличие от РСУБД
+06. [Варианты NoSQL решений и отличие от РСУБД](https://youtu.be/emJ8orM55cM) [статья](https://aristov.tech/blog/sql-vs-nosql/)
 07. Варианты установки Постгреса
 08. Подключение извне к кластеру
 09. PSQL
