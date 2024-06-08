@@ -16,7 +16,7 @@
 05. [Язык SQL и его основные конструкции](https://youtu.be/AVfTJXLBLLw) [статья](https://aristov.tech/blog/osnovy-postgresql/)
 06. [Варианты NoSQL решений и отличие от РСУБД](https://youtu.be/emJ8orM55cM) [статья](https://aristov.tech/blog/sql-vs-nosql/)
 07. [Варианты установки Постгреса](https://youtu.be/7-nKt5tmNxo) [статья](https://aristov.tech/blog/ustanovka-postgresql/)
-08. Подключение извне к кластеру
+08. [Подключение извне к кластеру](https://youtu.be/v022fqqSpa4) [статья](https://aristov.tech/blog/podklyuchenie-k-klasteru/)
 09. PSQL
 10. [Ликбез по Линуксу](https://youtu.be/BlGbPbfqK0I) [статья](https://aristov.tech/blog/likbez-po-linux/)
 11. DATABASE SCHEMA TABLE
