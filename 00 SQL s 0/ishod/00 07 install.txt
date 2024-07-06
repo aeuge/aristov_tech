@@ -93,8 +93,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
 
 sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
 
--- Сбор денег на подарок мне любимому https://www.tinkoff.ru/cf/282SRUErnmz без указания назначения платежа
 
-
--- установит клиента
+-- установим клиента
 postgresql-client-12
