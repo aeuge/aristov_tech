@@ -1,0 +1,66 @@
+sudo pg_ctlcluster 16 main start
+sudo -u postgres psql
+
+-- отличие numeric vs real
+CREATE or REPLACE PROCEDURE finance(inout x text)
+as $$
+    DECLARE 
+	     i INTEGER DEFAULT 0;
+	     numeric_ DECIMAL(10,4) DEFAULT 0;
+	     float_ FLOAT DEFAULT 0;
+	BEGIN
+	    LOOP  
+	        numeric_ := numeric_ + 0.001;
+	        float_ := float_ + 0.001E0;
+	        i := i + 1;
+	        if i > 10000 
+	        	then exit; 
+	        end if; 
+		END LOOP;
+		x = numeric_ || ' ' || float_;
+   	end;
+$$
+language plpgsql 
+;
+
+call finance('');
+
+-- разница в объёме при использовании русского
+select bit_length('test');
+select bit_length('тест');
+
+-- большие тексты будут сжиматься под капотом
+
+DROP TABLE IF EXISTS warehouse;
+CREATE TABLE warehouse (id serial UNIQUE, 
+	name text NOT NULL DEFAULT '', 
+	kolvo int NOT NULL DEFAULT 0, 
+	price numeric NOT NULL DEFAULT 0.0,
+	salesTime timestamp with time zone NOT NULL DEFAULT current_timestamp, -- UTC
+	salesTime2 timestamp NOT NULL DEFAULT current_timestamp
+);
+\d+ warehouse
+INSERT INTO warehouse(name) VALUES ('apple');
+INSERT INTO warehouse(name, price) VALUES ('banana',2.1);
+
+SELECT * FROM warehouse;
+SELECT * FROM warehouse WHERE salesTime=salesTime2;
+
+
+-- преобразование типов
+SELECT '10'::real::numeric, '10'::numeric, '10'::numeric (10,2), '10'::text;
+SELECT CAST('10' AS INTEGER);
+SELECT to_date('05 May 2024', 'DD Mon YYYY');
+
+
+-- UUID
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TABLE accounts (
+	id UUID PRIMARY KEY DEFAULT uuid_generate_v1(),
+  	balance DECIMAL
+  );
+
+INSERT INTO accounts(balance) VALUES ('10');
+SELECT * FROM accounts;
+
+select bit_length(id::text) FROM accounts;

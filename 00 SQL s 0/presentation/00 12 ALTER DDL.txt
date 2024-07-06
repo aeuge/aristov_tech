@@ -1,0 +1,40 @@
+-- sudo pg_ctlcluster 16 main start
+DROP TABLE IF EXISTS warehouse;
+CREATE TABLE warehouse (id serial UNIQUE, 
+	name text NOT NULL DEFAULT '', 
+	kolvo int NOT NULL DEFAULT 0, 
+	price numeric NOT NULL DEFAULT 0.0
+);
+
+DROP TABLE IF EXISTS sales;
+CREATE TABLE sales(
+	id serial PRIMARY KEY, 
+	kolvo int NOT NULL, 
+	summa numeric NOT NULL DEFAULT 0.0,  
+	fk_warehouse int references warehouse(id) ON DELETE CASCADE, 
+	salesDate date default current_date
+);
+
+INSERT INTO warehouse(name) VALUES ('apple');
+INSERT INTO warehouse(name, price) VALUES ('banana',2.1);
+INSERT INTO sales(fk_warehouse,kolvo,summa) VALUES (2,10,100);
+INSERT INTO warehouse(name) VALUES ('apple2');
+
+SELECT * FROM warehouse;
+SELECT * FROM sales;
+
+-- добавим поле
+ALTER TABLE sales ADD COLUMN salesTime timestamp;
+
+-- добавим значение по умолчанию
+ALTER TABLE sales ALTER COLUMN salesTime SET DEFAULT current_timestamp;
+SELECT * FROM sales;
+
+-- добавим поле со значением по умолчанию
+ALTER TABLE sales ADD COLUMN salesTime2 timestamp DEFAULT current_timestamp;
+SELECT * FROM sales;
+
+-- попробуем изменить тип данных
+ALTER TABLE warehouse ALTER COLUMN price TYPE int;
+SELECT * FROM warehouse; -- 2.1 -> 2 и без ошибок
+

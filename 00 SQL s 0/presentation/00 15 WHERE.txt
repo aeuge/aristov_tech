@@ -1,0 +1,98 @@
+sudo pg_ctlcluster 16 main start
+-- загрузить тайские перевозки
+sudo -u postgres
+-- cd ~ && wget https://storage.googleapis.com/thaibus/thai_small.tar.gz && tar -xf thai_small.tar.gz && psql < thai.sql
+psql -d thai
+
+\timing
+SELECT floor(random()*5000000) as r \gset
+\echo :r
+
+-- Теперь создадим запрос к БД с этой переменной
+SELECT id, fkRide, fio, contact, fkSeat FROM book.tickets WHERE id = :r; 
+
+
+-- Давайте упростим систему и вместо переменной вставим сразу функцию, это ведь тоже самое?
+SELECT id, fkRide, fio, contact, fkSeat FROM book.tickets WHERE id = floor(random()*5000000);
+
+-- VOLATILE
+\sf+ random
+
+
+-- ORDER BY
+SELECT id
+       , fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY fio; 
+
+SELECT id
+       , fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY fio desc, contact asc;
+
+-- почему нет разницы при сортировке по 2 полям?
+SELECT id
+       , fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY fio desc, contact desc;
+
+
+-- OFFSET LIMIT
+
+SELECT id
+       , fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY id
+OFFSET 5; 
+
+SELECT id
+       , fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY id
+LIMIT 3; 
+
+SELECT id
+       , fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY id
+OFFSET 2
+LIMIT 3; 
+
+
+-- порядок команд строго определен!
+
+-- не используйте в ORDER BY 1,2 и тд
+-- очередность полей может поменяться!
+SELECT --id, 
+       fkRide
+       , fio
+       , contact
+       , fkSeat 
+FROM book.tickets 
+WHERE id < 10
+ORDER BY 1
+LIMIT 5;

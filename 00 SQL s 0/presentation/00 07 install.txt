@@ -1,0 +1,100 @@
+-- развернем ВМ postgres в GCE
+--image-family=ubuntu-2204-lts
+gcloud beta compute --project=celtic-house-266612 instances create postgres --zone=us-central1-a --machine-type=e2-small --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=933982307116-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-ssd --boot-disk-device-name=postgres --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+ 
+gcloud compute ssh postgres
+ssh augene@34.123.132.205
+
+-- по умолчанию установится 12 версия
+-- sudo apt-get -y install postgresql
+
+-- https://www.postgresql.org/download/linux/ubuntu/
+-- 14 версия
+-- sudo apt update && sudo apt upgrade -y && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt-get -y install postgresql-14
+
+-- 16 версия
+-- sudo apt update && sudo apt upgrade -y && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt-get -y install postgresql-16
+
+
+-- если будете экспериментировать с промежуточными версиями, не LTS
+-- корректно добавим к upgrade & install postgres
+-- sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y -q
+sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y -q && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
+
+-- посмотрим, что кластер стартовал
+pg_lsclusters
+
+-- протестим ssh 
+gcloud beta compute --project=celtic-house-266612 instances create sshtest --zone=us-central1-a --machine-type=e2-small --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=933982307116-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-ssd --boot-disk-device-name=sshtest --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+
+gcloud compute ssh sshtest
+
+gcloud compute instances list
+
+ssh aeugene@34.123.132.205
+
+ssh-keygen -t rsa
+-- запускаем агента, если не запущен
+eval `ssh-agent -s`
+ssh-add .ssh/id_rsa
+
+-- добавим ключ в metadata
+
+ssh aeugene@34.31.49.167
+
+-- удалим тестовую ВМ
+gcloud compute instances delete sshtest
+
+
+gcloud compute instances delete postgres
+
+
+
+--ЯО
+-- Ubuntu 22.04
+-- Минимальные параметры 2 ядра 2Гб ОЗУ. Рекомендую SSD диск 10Gb. Также не забывайте отключать ВМ, когда не используете
+-- https://cloud.yandex.ru/docs/compute/operations/vm-connect/ssh?from=int-console-help-center-or-nav
+yc compute instance create \
+  --name postgres \
+  --hostname postgres \
+  --cores 2 \
+  --memory 4 \
+  --create-boot-disk size=15G,type=network-ssd,image-folder-id=standard-images,image-family=ubuntu-2204-lts \
+  --network-interface subnet-name=default-ru-central1-a,nat-ip-version=ipv4 \
+  --zone ru-central1-a \
+  --metadata-from-file ssh-keys=/home/aeugene/.ssh/aeugene.txt
+
+-- обратит внимание на помещение открытого ключа в aeugene.txt
+cat /home/aeugene/.ssh/aeugene.txt
+
+-- как сгенерировать ssh ключи
+-- ssh-keygen -t rsa
+-- запускаем агента, если не запущен
+-- eval `ssh-agent -s`
+-- ssh-add .ssh/id_rsa
+
+
+yc compute instance get postgres
+yc compute instance get --full postgres
+
+
+ssh aeugene@158.160.113.114
+ssh yc-user@158.160.113.114
+ssh root@158.160.113.114
+ssh ubuntu@158.160.113.114
+
+-- sudo apt update - может долго идти(
+
+sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y -q && 
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - 
+sudo apt-get update
+sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
+
+sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
+
+-- Сбор денег на подарок мне любимому https://www.tinkoff.ru/cf/282SRUErnmz без указания назначения платежа
+
+
+-- установит клиента
+postgresql-client-12
