@@ -21,7 +21,7 @@
 10. [Ликбез по Линуксу](https://youtu.be/BlGbPbfqK0I) [статья](https://aristov.tech/blog/likbez-po-linux/)
 11. [DATABASE SCHEMA TABLE](https://youtu.be/2LesM4BION4) [статья](https://aristov.tech/blog/database-scheme-table-postgresql/)
 12. [ALTER](https://youtu.be/FV1pKjqYTgc) [статья](https://aristov.tech/blog/alter-drop-postgresql/)
-13. Типы данных
+13. [Типы данных](https://youtu.be/r6JhBFXoEOE)[статья](https://aristov.tech/blog/tipy-dannyh-postgresql/)
 14. Варианты SELECT
 15. WHERE ORDER BY LIMIT
 16. INSERT
