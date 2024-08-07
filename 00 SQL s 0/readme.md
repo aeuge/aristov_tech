@@ -9,19 +9,19 @@
 #### Презентации к выложенным урокам находятся в каталоге [presentation](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/presentation)
 
 ### План
-01. [Реляционная модель данных](https://youtu.be/3EZIKII6SKg) [статья](https://aristov.tech/blog/relational-model/)
-02. [Основы проектирования - 3 нормальная форма](https://youtu.be/H9z4LHy7Rp4) [статья](https://aristov.tech/blog/normalnye-formy-proektirovanie/)
-03. [Первичный ключ (естественный и искусственный) и внешний ключ](https://youtu.be/sDRJOdYVn6M) [статья](https://aristov.tech/blog/pervichnyj-i-vneshnij-klyuchi-postgresql/)
-04. [SEQUENCE](https://youtu.be/WKsxn5vJHag) [статья](https://aristov.tech/blog/sequence-postgresql/)
-05. [Язык SQL и его основные конструкции](https://youtu.be/AVfTJXLBLLw) [статья](https://aristov.tech/blog/osnovy-postgresql/)
-06. [Варианты NoSQL решений и отличие от РСУБД](https://youtu.be/emJ8orM55cM) [статья](https://aristov.tech/blog/sql-vs-nosql/)
-07. [Варианты установки Постгреса](https://youtu.be/7-nKt5tmNxo) [статья](https://aristov.tech/blog/ustanovka-postgresql/)
-08. [Подключение извне к кластеру](https://youtu.be/v022fqqSpa4) [статья](https://aristov.tech/blog/podklyuchenie-k-klasteru/)
-09. [PSQL](https://youtu.be/v022fqqSpa4)(https://youtu.be/_dnSSVttkb8) [статья](https://aristov.tech/blog/psql-i-gui/)
-10. [Ликбез по Линуксу](https://youtu.be/BlGbPbfqK0I) [статья](https://aristov.tech/blog/likbez-po-linux/)
-11. [DATABASE SCHEMA TABLE](https://youtu.be/2LesM4BION4) [статья](https://aristov.tech/blog/database-scheme-table-postgresql/)
-12. [ALTER](https://youtu.be/FV1pKjqYTgc) [статья](https://aristov.tech/blog/alter-drop-postgresql/)
-13. [Типы данных](https://youtu.be/r6JhBFXoEOE) [статья](https://aristov.tech/blog/tipy-dannyh-postgresql/)
+01. [Реляционная модель данных](https://youtu.be/3EZIKII6SKg) [/статья](https://aristov.tech/blog/relational-model/)
+02. [Основы проектирования - 3 нормальная форма](https://youtu.be/H9z4LHy7Rp4) [/статья](https://aristov.tech/blog/normalnye-formy-proektirovanie/)
+03. [Первичный ключ (естественный и искусственный) и внешний ключ](https://youtu.be/sDRJOdYVn6M) [/статья](https://aristov.tech/blog/pervichnyj-i-vneshnij-klyuchi-postgresql/)
+04. [SEQUENCE](https://youtu.be/WKsxn5vJHag) [/статья](https://aristov.tech/blog/sequence-postgresql/)
+05. [Язык SQL и его основные конструкции](https://youtu.be/AVfTJXLBLLw) [/статья](https://aristov.tech/blog/osnovy-postgresql/)
+06. [Варианты NoSQL решений и отличие от РСУБД](https://youtu.be/emJ8orM55cM) [/статья](https://aristov.tech/blog/sql-vs-nosql/)
+07. [Варианты установки Постгреса](https://youtu.be/7-nKt5tmNxo) [/статья](https://aristov.tech/blog/ustanovka-postgresql/)
+08. [Подключение извне к кластеру](https://youtu.be/v022fqqSpa4) [/статья](https://aristov.tech/blog/podklyuchenie-k-klasteru/)
+09. [PSQL](https://youtu.be/_dnSSVttkb8) [/статья](https://aristov.tech/blog/psql-i-gui/)
+10. [Ликбез по Линуксу](https://youtu.be/BlGbPbfqK0I) [/статья](https://aristov.tech/blog/likbez-po-linux/)
+11. [DATABASE SCHEMA TABLE](https://youtu.be/2LesM4BION4) [/статья](https://aristov.tech/blog/database-scheme-table-postgresql/)
+12. [ALTER](https://youtu.be/FV1pKjqYTgc) [/статья](https://aristov.tech/blog/alter-drop-postgresql/)
+13. [Типы данных](https://youtu.be/r6JhBFXoEOE) [/статья](https://aristov.tech/blog/tipy-dannyh-postgresql/)
 14. Варианты SELECT
 15. WHERE ORDER BY LIMIT
 16. INSERT
