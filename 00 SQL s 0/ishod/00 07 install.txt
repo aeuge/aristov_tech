@@ -93,6 +93,5 @@ sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
 
 sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16
 
-
--- установим клиента
+-- установит клиента
 postgresql-client-12
