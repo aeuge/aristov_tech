@@ -21,7 +21,7 @@
 13. [Типы данных](https://youtu.be/r6JhBFXoEOE) [/статья](https://aristov.tech/blog/tipy-dannyh-postgresql/)
 14. [Варианты SELECT](https://youtu.be/zjiye4UGl9w) [/статья](https://aristov.tech/blog/select-v-postgresql/)
 15. [WHERE ORDER BY LIMIT](https://youtu.be/dZENrioANIc) [/статья](https://aristov.tech/blog/where-v-postgresql/)
-16. INSERT
+16. [INSERT](https://aristov.tech/blog/insert-v-postgresql/) [/статья](https://youtu.be/3eO99vZh8vg)
 17. UPDATE
 18. DELETE
 19. MERGE
