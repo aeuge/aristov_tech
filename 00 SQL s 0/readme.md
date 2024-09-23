@@ -22,7 +22,7 @@
 14. [Варианты SELECT](https://youtu.be/zjiye4UGl9w) [/статья](https://aristov.tech/blog/select-v-postgresql/)
 15. [WHERE ORDER BY LIMIT](https://youtu.be/dZENrioANIc) [/статья](https://aristov.tech/blog/where-v-postgresql/)
 16. [INSERT](https://aristov.tech/blog/insert-v-postgresql/) [/статья](https://youtu.be/3eO99vZh8vg)
-17. UPDATE
+17. [UPDATE](https://aristov.tech/blog/update-v-postgresql/) [/статья](https://youtu.be/s8BSgocTTYg)
 18. DELETE
 19. MERGE
 20. JOIN
