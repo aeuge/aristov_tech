@@ -23,7 +23,7 @@
 15. [WHERE ORDER BY LIMIT](https://youtu.be/dZENrioANIc) [/статья](https://aristov.tech/blog/where-v-postgresql/)
 16. [INSERT](https://aristov.tech/blog/insert-v-postgresql/) [/статья](https://youtu.be/3eO99vZh8vg)
 17. [UPDATE](https://aristov.tech/blog/update-v-postgresql/) [/статья](https://youtu.be/s8BSgocTTYg)
-18. DELETE
+18. [DELETE](https://aristov.tech/blog/delete-v-postgresql/) [/статья](https://youtu.be/sLYhbX32N1I)
 19. MERGE
 20. JOIN
 21. UNION
