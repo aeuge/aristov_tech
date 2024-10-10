@@ -21,10 +21,10 @@
 13. [Типы данных](https://youtu.be/r6JhBFXoEOE) [/статья](https://aristov.tech/blog/tipy-dannyh-postgresql/)
 14. [Варианты SELECT](https://youtu.be/zjiye4UGl9w) [/статья](https://aristov.tech/blog/select-v-postgresql/)
 15. [WHERE ORDER BY LIMIT](https://youtu.be/dZENrioANIc) [/статья](https://aristov.tech/blog/where-v-postgresql/)
-16. [INSERT](https://aristov.tech/blog/insert-v-postgresql/) [/статья](https://youtu.be/3eO99vZh8vg)
-17. [UPDATE](https://aristov.tech/blog/update-v-postgresql/) [/статья](https://youtu.be/s8BSgocTTYg)
-18. [DELETE](https://aristov.tech/blog/delete-v-postgresql/) [/статья](https://youtu.be/sLYhbX32N1I)
-19. MERGE
+16. [INSERT](https://youtu.be/3eO99vZh8vg) [/статья](https://aristov.tech/blog/insert-v-postgresql/)
+17. [UPDATE](https://youtu.be/s8BSgocTTYg) [/статья](https://aristov.tech/blog/update-v-postgresql/)
+18. [DELETE](https://youtu.be/sLYhbX32N1I) [/статья](https://aristov.tech/blog/delete-v-postgresql/)
+19. [MERGE](https://youtu.be/O4wmm9t3kmU) [/статья](https://aristov.tech/blog/merge-v-postgresql/)
 20. JOIN
 21. UNION
 22. GROUP BY
