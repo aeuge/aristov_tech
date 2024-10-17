@@ -1,0 +1,91 @@
+-- sudo pg_ctlcluster 16 main start
+-- sudo -u postgres psql
+DROP DATABASE IF EXISTS test;
+CREATE DATABASE test;
+DROP ROLE IF EXISTS onlyread;
+CREATE ROLE onlyread;
+GRANT CONNECT ON DATABASE test TO onlyread;
+\c test;
+
+CREATE SCHEMA IF NOT EXISTS test;
+GRANT USAGE ON SCHEMA test TO onlyread;
+
+DROP TABLE IF EXISTS test.warehouse;
+CREATE TABLE test.warehouse (id serial UNIQUE, 
+	name text NOT NULL DEFAULT '', 
+	kolvo int NOT NULL DEFAULT 0, 
+	price numeric(17,2) NOT NULL DEFAULT 0.0
+);
+
+DROP TABLE IF EXISTS test.sale;
+CREATE TABLE test.sale(
+	id serial PRIMARY KEY, 
+	kolvo int NOT NULL DEFAULT 0, 
+	summa numeric(17,2) NOT NULL DEFAULT 0.0,  
+	fk_warehouseID int references test.warehouse(id) ON DELETE CASCADE, 
+	saleDate date
+);
+
+INSERT INTO test.warehouse(name,kolvo,price) VALUES ('абрикосы',1,500);
+INSERT INTO test.warehouse(name,kolvo,price) VALUES ('ананасы',2,100);
+INSERT INTO test.sale(fk_warehouseID,kolvo,summa) VALUES (2,1,50);
+
+SELECT w.name, s.kolvo, s.summa
+FROM test.sale s
+JOIN test.warehouse w
+    ON s.fk_warehouseid=w.id;
+
+
+GRANT SELECT ON TABLE test.warehouse TO onlyread;
+DROP USER IF EXISTS bigboss;
+CREATE USER bigboss WITH PASSWORD 'admin';
+GRANT onlyread TO bigboss;
+GRANT SELECT ON TABLE test.sale TO bigboss;
+
+-- подключимся под созданным юзером (только через psql -h -u, иначе должен быть аналогичный LINUX пользователь)
+sudo -u postgres psql -h localhost -U bigboss -W -d test
+\d
+\d test.*
+
+SELECT w.name, s.kolvo, s.summa
+FROM test.sale s
+JOIN test.warehouse w
+    ON s.fk_warehouseid=w.id;
+
+INSERT INTO test.sale(fk_warehouseID,kolvo,summa) VALUES (1,1,50);
+
+-- вернемся под рута
+sudo -u postgres psql -d test
+
+GRANT ALL PRIVILEGES ON TABLE test.sale TO "bigboss";
+CREATE TABLE test.test (t text);
+INSERT INTO test.test values('test');
+
+
+sudo -u postgres psql -h localhost -U bigboss -W -d test
+
+INSERT INTO test.sale(fk_warehouseID,kolvo,summa) VALUES (1,1,50);
+-- ERROR:  permission denied for sequence sale_id_seq
+INSERT INTO test.sale(id,fk_warehouseID,kolvo,summa) VALUES (50,1,1,50);
+
+INSERT INTO test.test values('test2');
+-- ERROR:  permission denied for table test
+-- нет привилегий по умолчнию - default privileges - на вновь создаваемые объекты
+-- https://www.postgresql.org/docs/current/sql-alterdefaultprivileges.html
+
+-- Посмотреть права можем:
+\du+
+\dg
+-- дефолтные привилегии
+\ddp
+-- гранты ролям
+\drg
+-- привилегии объекта
+\dp+ test.sales
+\set ECHO_HIDDEN on
+
+
+SELECT * FROM pg_user;
+SELECT * FROM pg_group;
+SELECT * FROM pg_authid;
+SELECT * FROM pg_shadow;

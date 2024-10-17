@@ -1,0 +1,79 @@
+sudo pg_ctlcluster 16 main start
+sudo -u postgres psql
+
+
+-- отличие подтверждения транзакции
+DROP TABLE IF EXISTS warehouse;
+CREATE TABLE warehouse (id serial UNIQUE, 
+	name text NOT NULL DEFAULT '', 
+	kolvo int NOT NULL DEFAULT 0, 
+	price numeric NOT NULL DEFAULT 0.0,
+	salesTime timestamp with time zone NOT NULL DEFAULT current_timestamp, -- UTC
+	salesTime2 timestamp NOT NULL DEFAULT current_timestamp
+);
+
+INSERT INTO warehouse(name,kolvo,price) VALUES ('apple',10,10.2),('grape',20,'20.2');
+SELECT * FROM warehouse WHERE id = 1;
+
+-- корректный вариант
+-- изменяются только указанные поля
+UPDATE warehouse 
+SET kolvo = kolvo + 30
+	,price = 30.3
+WHERE id = 1;
+SELECT * FROM warehouse WHERE id = 1;
+
+-- WHERE точно такое же как и у SELECT
+
+-- не рекомендованый вариант
+-- может поменяться очередность, как вариант
+UPDATE warehouse 
+SET (kolvo,price) = (30,30.3)
+WHERE id = 1;
+
+-- изменяются только указанные поля
+UPDATE warehouse 
+SET salesTime = DEFAULT
+WHERE id = 1;
+
+
+SELECT * FROM warehouse WHERE id = 1;
+
+-- при апдейте возможны ошибки проверки ограничения целостности
+-- ON CONFLICT пока не завезли
+UPDATE warehouse 
+SET id = id + 1;
+
+-- update без условия - обычно ошибка и потом будет очень больно
+UPDATE warehouse 
+SET kolvo = kolvo + 1;
+
+-- хорошая практика оборачивать в транзакцию с ROLLBACK или сразу накладывать невыполнимое условие
+UPDATE warehouse 
+SET 
+WHERE 1=0;
+
+BEGIN;
+UPDATE warehouse 
+SET ;
+-- тут проверить как получилось
+ROLLBACK;
+
+-- returning
+UPDATE warehouse 
+SET kolvo = kolvo + 40
+	,price = 40.3
+WHERE id = 1
+RETURNING kolvo, price;
+
+-- не сработает
+UPDATE warehouse as w
+SET (kolvo,price) = (50,50.3)
+WHERE id = 1
+RETURNING EXCLUDED.kolvo;
+
+UPDATE warehouse as w
+SET (kolvo,price) = (50,50.3)
+WHERE id = 1
+RETURNING w.kolvo;
+

@@ -1,0 +1,108 @@
+sudo pg_ctlcluster 16 main start
+sudo -u postgres psql
+
+
+-- отличие подтверждения транзакции
+DROP TABLE IF EXISTS warehouse;
+CREATE TABLE warehouse (id serial UNIQUE, 
+	name text NOT NULL DEFAULT '', 
+	kolvo int NOT NULL DEFAULT 0, 
+	price numeric NOT NULL DEFAULT 0.0,
+	salesTime timestamp with time zone NOT NULL DEFAULT current_timestamp, -- UTC
+	salesTime2 timestamp NOT NULL DEFAULT current_timestamp
+);
+
+-- без указания полей - плохзой вариант
+INSERT INTO warehouse VALUES (DEFAULT,'apple');
+
+INSERT INTO warehouse(id, name) VALUES (DEFAULT,'apple');
+
+INSERT INTO warehouse(id, name, kolvo) VALUES (DEFAULT,'apple',DEFAULT);
+
+INSERT INTO warehouse(id, name) VALUES (DEFAULT,'apple'),(DEFAULT,'grape');
+
+INSERT INTO warehouse(name,kolvo,price) VALUES ('apple',10,10.2),('grape',20,'20.2');
+
+\echo :AUTOCOMMIT
+
+INSERT INTO warehouse(name,kolvo,price) 
+VALUES  ('apple',10,10.2)
+		,('grape',20,'20.2');
+
+-- INSERT INTO .. SELECT
+INSERT INTO warehouse(name,kolvo,price) 
+	SELECT name,kolvo,price 
+	FROM warehouse 
+	LIMIT 1;
+
+SELECT * FROM warehouse ORDER BY id desc LIMIT 1;
+
+
+-- ON CONFLICT
+SELECT * FROM warehouse WHERE id = 1;
+-- ошибка
+INSERT INTO warehouse(id,kolvo) VALUES (1,10);
+
+INSERT INTO warehouse(id,kolvo) 
+VALUES (1,10)
+ON CONFLICT (id) DO UPDATE SET kolvo = kolvo + EXCLUDED.kolvo;
+
+-- необходимо задать алиас таблице для вставки
+INSERT INTO warehouse as w(id,kolvo)
+VALUES (1,10)
+ON CONFLICT (id) DO UPDATE SET kolvo = w.kolvo + EXCLUDED.kolvo;
+
+SELECT * FROM warehouse WHERE id = 1;
+
+-- ничего не делать
+INSERT INTO warehouse as w(id,kolvo)
+VALUES (1,10)
+ON CONFLICT (id) DO NOTHING;
+
+
+--
+INSERT INTO warehouse as w(id,kolvo)
+VALUES (1,10)
+ON CONFLICT (id) DO UPDATE SET kolvo = w.kolvo + EXCLUDED.kolvo
+ON CONFLICT (name) DO UPDATE SET kolvo = w.kolvo + EXCLUDED.kolvo;
+
+delete from warehouse;
+create unique index idx_warehouse_name on warehouse(name);
+INSERT INTO warehouse(id,name,kolvo,price) VALUES (1,'apple',10,10.2),(2,'grape',20,'20.2');
+
+INSERT INTO warehouse as w(name,kolvo)
+VALUES ('apple',10)
+ON CONFLICT (name) DO UPDATE SET kolvo = w.kolvo + EXCLUDED.kolvo;
+
+-- 2 условия НЕ реализовать классически
+INSERT INTO warehouse as w(name,kolvo)
+VALUES ('apple',10)
+ON CONFLICT (id,name) DO UPDATE SET kolvo = w.kolvo + EXCLUDED.kolvo;
+
+-- варианты: обработка EXCEPTION, составной уникальный индекс
+
+-- returning
+INSERT INTO warehouse(id, name) VALUES (DEFAULT,'apple777');
+INSERT INTO warehouse(id, name) VALUES (DEFAULT,'apple888') RETURNING id;
+
+-- быстрее добавить 10 000 записей в одной транзакции или каждую обернуть в транзакцию
+CREATE or replace PROCEDURE trans(x int)
+AS $$
+BEGIN
+    FOR i in 1..10000 LOOP
+        INSERT INTO warehouse(name) VALUES ('apple'||i);
+        IF x = 1 THEN 
+            COMMIT; 
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- вызовем процедуру используя CALL
+\echo :AUTOCOMMIT
+\timing
+CALL trans(1);
+CALL trans(0);
+
+
