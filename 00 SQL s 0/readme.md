@@ -26,7 +26,7 @@
 18. [DELETE](https://youtu.be/sLYhbX32N1I) [/статья](https://aristov.tech/blog/delete-v-postgresql/)
 19. [MERGE](https://youtu.be/O4wmm9t3kmU) [/статья](https://aristov.tech/blog/merge-v-postgresql/)
 20. [JOIN](https://youtu.be/BuhE6acOtek) [/статья](https://aristov.tech/blog/join-v-postgresql/)
-21. UNION
+21. [UNION](https://youtu.be/MZoEpPYYZAQ) [/статья](https://aristov.tech/blog/mnozhestva-v-postgresql/)
 22. GROUP BY
 23. HAVING
 24. VIEW
