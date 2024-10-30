@@ -27,7 +27,7 @@
 19. [MERGE](https://youtu.be/O4wmm9t3kmU) [/статья](https://aristov.tech/blog/merge-v-postgresql/)
 20. [JOIN](https://youtu.be/BuhE6acOtek) [/статья](https://aristov.tech/blog/join-v-postgresql/)
 21. [UNION](https://youtu.be/MZoEpPYYZAQ) [/статья](https://aristov.tech/blog/mnozhestva-v-postgresql/)
-22. GROUP BY
+22. [GROUP BY](https://youtu.be/ADl4ezH9Tkg) [/статья](https://aristov.tech/blog/group-by-v-postgresql/)
 23. HAVING
 24. VIEW
 25. MATERIALIZED VIEW
