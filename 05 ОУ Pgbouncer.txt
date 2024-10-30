@@ -1,0 +1,234 @@
+-- pg_bouncer
+gcloud beta compute --project=celtic-house-266612 instances create postgres4 --zone=us-central1-a --machine-type=e2-standard-4 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=933982307116-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud --boot-disk-size=100GB --boot-disk-type=pd-ssd --boot-disk-device-name=postgres4 --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+
+gcloud compute ssh postgres4
+
+sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt -y install postgresql-16 unzip atop iotop
+
+sudo su postgres
+ 
+cat >> /etc/postgresql/16/main/postgresql.conf << EOL
+shared_buffers = '4096 MB'
+work_mem = '32 MB'
+maintenance_work_mem = '320 MB'
+huge_pages = off
+effective_cache_size = '11 GB'
+effective_io_concurrency = 100 # concurrent IO only really activated if OS supports posix_fadvise function
+random_page_cost = 1.1 # speed of random disk access relative to sequential access (1.0)
+
+# Monitoring
+shared_preload_libraries = 'pg_stat_statements'    # per statement resource usage stats
+track_io_timing=on        # measure exact block IO times
+track_functions=pl        # track execution times of pl-language procedures if any
+
+# Replication
+wal_level = replica		# consider using at least 'replica'
+max_wal_senders = 0
+synchronous_commit = on
+
+# Checkpointing: 
+checkpoint_timeout  = '15 min' 
+checkpoint_completion_target = 0.9
+max_wal_size = '1024 MB'
+min_wal_size = '512 MB'
+
+# WAL writing
+wal_compression = on
+wal_buffers = -1    # auto-tuned by Postgres till maximum of segment size (16MB by default)
+wal_writer_delay = 200ms
+wal_writer_flush_after = 1MB
+
+# Background writer
+bgwriter_delay = 200ms
+bgwriter_lru_maxpages = 100
+bgwriter_lru_multiplier = 2.0
+bgwriter_flush_after = 0
+
+# Parallel queries: 
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
+max_parallel_maintenance_workers = 2
+max_parallel_workers = 4
+parallel_leader_participation = on
+
+# Advanced features 
+enable_partitionwise_join = on 
+enable_partitionwise_aggregate = on
+jit = on
+max_slot_wal_keep_size = '1000 MB'
+track_wal_io_timing = on
+maintenance_io_concurrency = 100
+EOL
+
+pg_ctlcluster 16 main stop && pg_ctlcluster 16 main start
+
+
+-- посмотрим pg_bench в несколько потоков
+cd ~ && wget https://storage.googleapis.com/thaibus/thai_small.tar.gz && tar -xf thai_small.tar.gz && psql < thai.sql
+
+cat > ~/workload.sql << EOL
+
+\set r random(1, 5000000) 
+SELECT id, fkRide, fio, contact, fkSeat FROM book.tickets WHERE id = :r;
+
+EOL
+------------------------------------
+-- for 16 PG
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -U postgres thai
+
+-- ключ -n отключает первоначальный вакуум
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -n -U postgres thai
+
+
+
+-- развернем pg_bouncer и проверим на той же машине
+-- https://wtfm.info/pgbouncer-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BF%D1%83%D0%BB%D0%B5%D1%80%D0%B0-%D1%81%D0%BE%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9-postgresql/
+-- https://www.pgbouncer.org/
+sudo DEBIAN_FRONTEND=noninteractive apt install -y pgbouncer
+
+sudo systemctl status pgbouncer
+
+sudo systemctl stop pgbouncer
+
+-- https://www.pgbouncer.org/config.html
+cat > temp.cfg << EOF 
+[databases]
+thai = host=127.0.0.1 port=5432 dbname=thai
+[pgbouncer]
+logfile = /var/log/postgresql/pgbouncer.log
+pidfile = /var/run/postgresql/pgbouncer.pid
+listen_addr = *
+listen_port = 6432
+#auth_type = md5
+auth_type = scram-sha-256
+auth_file = /etc/pgbouncer/userlist.txt
+admin_users = admindb
+EOF
+cat temp.cfg | sudo tee -a /etc/pgbouncer/pgbouncer.ini
+
+-- утилита шифрования пароля в мд5 есть, например, в поставке pgpool
+-- sudo apt install pgpool2
+-- pg_md5 root123
+-- правильнее брать из таблицы юзеров постгреса - прямая совместимость со скрам ша
+cat > temp2.cfg << EOF 
+"admindb" "admin123#"
+"admindb2" "md5a1edc6f635a68ce9926870fe752e8f2b"
+"postgres" "admin123#"
+"postgres2" "SCRAM-SHA-256$4096:eM1ToRH8QOewbDddWnxzBQ==$ktPLPRkEPtMr1epwtJv1HxVHAxjsM+KEbLaW7loiBQs=:UMtetDFOi30NB56aX4JBT3lXudOClkANX02Xxhjjg1U="
+EOF
+cat temp2.cfg | sudo tee -a /etc/pgbouncer/userlist.txt
+
+-- можем автоматизировать создание файлов пользователей /etc/pgbouncer/userlist.txt на всех 3х ВМ
+-- sudo -u postgres psql -Atq -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT concat('\"', usename, '\" \"', passwd, '\"') FROM pg_shadow" >> /tmp/userlist.txt && \
+-- sudo mv /tmp/userlist.txt /etc/pgbouncer/userlist.txt
+
+-- зададим пароль юзеру postgres
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'admin123#';";
+sudo -u postgres psql -c "create user postgres2 with password 'admin123#';";
+sudo -u postgres psql -c "create user admindb with password 'admin123#';";
+sudo -u postgres psql -c "create user admindb2 with password 'md5a1edc6f635a68ce9926870fe752e8f2b';";
+
+sudo -u postgres psql -c "select usename,passwd from pg_shadow;"
+
+sudo -u postgres psql -c "select sha256('pass');"
+sudo -u postgres psql -c "select md5 ('pass');"
+
+
+-- sudo su postgres
+-- rm ~/.pgpass
+-- echo "localhost:5432:thai:postgres:admin123#">>~/.pgpass
+-- chmod 600 ~/.pgpass
+echo "localhost:5432:thai:postgres:admin123#" | sudo tee -a /var/lib/postgresql/.pgpass && sudo chmod 600 /var/lib/postgresql/.pgpass 
+sudo chown postgres:postgres /var/lib/postgresql/.pgpass
+
+sudo su postgres
+psql -h localhost -U postgres
+psql -h localhost -U postgres -d thai
+
+-- echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/16/main/postgresql.conf
+-- echo "host all all 10.0.0.0/8 scram-sha-256" | sudo tee -a /etc/postgresql/16/main/pg_hba.conf
+-- echo "host all all 127.0.0.1/32 md5" >> /etc/postgresql/16/main/pg_hba.conf
+-- sudo pg_ctlcluster 16 main restart
+-- pg_ctlcluster 16 main reload
+
+-- можем запустить в демоне с ключом -d, но это отличный процесс от сервиса
+-- sudo -u postgres pgbouncer /etc/pgbouncer/pgbouncer.ini
+
+sudo systemctl status pgbouncer 
+sudo systemctl enable pgbouncer 
+sudo systemctl start pgbouncer 
+sudo systemctl restart pgbouncer 
+
+sudo -u postgres psql -p 6432 -h 127.0.0.1 -d thai -U postgres
+
+SHOW password_encryption;
+-- ALTER SYSTEM SET password_encryption = 'scram-sha-256';
+-- SELECT pg_reload_conf();
+-- ALTER SYSTEM SET password_encryption = 'md5';
+-- SELECT pg_reload_conf();
+-- psql -c "SELECT pg_reload_conf();"
+-- create user admindb with password 'root123';
+-- psql -p 5432 -h 127.0.0.1 -d thai -U admindb
+sudo nano /etc/postgresql/16/main/pg_hba.conf
+
+-- select usename,passwd from pg_shadow;
+-- при 2 дублирующих строках приоритет имеет SCRAM-SHA-256
+-- https://www.crunchydata.com/blog/pgbouncer-scram-authentication-postgresql
+/*
+The passwords or secrets stored in the authentication file serve two purposes. 
+First, they are used to verify the passwords of incoming client connections, if a password-based authentication method is configured. 
+Second, they are used as the passwords for outgoing connections to the backend server, 
+if the backend server requires password-based authentication (unless the password is specified directly in the database's connection string).
+ The latter works if the password is stored in plain text or MD5-hashed. SCRAM secrets can only be used for logging into a server
+  if the client authentication also uses SCRAM, the PgBouncer database definition does not specify a user name, and the 
+  SCRAM secrets are identical in PgBouncer and the PostgreSQL server (same salt and iterations, not merely the same password). 
+  This is due to an inherent security property of SCRAM: The stored SCRAM secret cannot by itself be used for deriving login credentials.
+  */
+-- sudo pg_ctlcluster 16 main restart
+
+
+sudo nano /etc/pgbouncer/pgbouncer.ini
+sudo nano /etc/pgbouncer/userlist.txt
+-- https://www.percona.com/blog/postgresql-14-and-recent-scram-authentication-changes-should-i-migrate-to-scram/
+
+-- трейс логов
+tail /var/log/postgresql/postgresql-16-main.log
+\! tail /var/log/postgresql/pgbouncer.log
+
+
+-- зайти в админку pgbouncer
+psql -p 6432 -h 127.0.0.1 -d pgbouncer -U admindb
+
+-- указывается, кто админ
+nano /etc/pgbouncer/userlist.txt
+
+
+show clients;
+
+-- Просмотр статистики в баунсере
+show servers;
+SHOW STATS_TOTALS;
+show pools;
+
+-- Поставить на паузу коннекты:
+pause thai;
+
+-- Возобновить коннект:
+resume thai;
+
+-- ваниль
+sudo su postgres
+cd
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -n -U postgres thai
+
+-- pgbouncer
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -n -U postgres -p 6432 -h localhost thai
+
+-- htop
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 60 -f ~/workload.sql -n -U postgres thai
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 60 -f ~/workload.sql -n -U postgres -p 6432 -h localhost thai
+
+-- вместо unix socket - localhost
+/usr/lib/postgresql/16/bin/pgbench -c 8 -j 4 -T 10 -f ~/workload.sql -n -U postgres -h localhost thai
+
+gcloud compute instances delete postgres4
