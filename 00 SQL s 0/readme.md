@@ -3,9 +3,7 @@
 #### Продолжительность 30 тем ~ 20 ак.часов
 #### Формат: запись лекция без расшифровки в группе для обучения https://t.me/sql_s_0 
 #### Темы будут выкладываться ~ по 1 в неделю на [ютубе](https://www.youtube.com/@aristovtech)/[рутубе](https://rutube.ru/channel/35256873/)/[ВКВидео](https://vk.com/video/@public212716752), в виде статей в моём блоге. Ниже приведены ссылки
-#### Презентации к выложенным урокам находятся в каталоге [presentation](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/presentation), исходники в каталоге [oshod](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/ishod)
-
-||скрытый текст||
+#### Презентации к выложенным урокам находятся в каталоге [presentation](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/presentation), исходники в каталоге [ishod](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/ishod)
 
 ### План
 01. [Реляционная модель данных](https://youtu.be/3EZIKII6SKg) [/статья](https://aristov.tech/blog/relational-model/)
