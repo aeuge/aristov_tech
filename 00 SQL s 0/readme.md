@@ -29,7 +29,7 @@
 21. [UNION](https://youtu.be/MZoEpPYYZAQ) [/статья](https://aristov.tech/blog/mnozhestva-v-postgresql/)
 22. [GROUP BY](https://youtu.be/ADl4ezH9Tkg) [/статья](https://aristov.tech/blog/group-by-v-postgresql/)
 23. [HAVING](https://youtu.be/U591EZV79G4) [/статья](https://aristov.tech/blog/having-v-postgresql/)
-24. VIEW
+24. [VIEW](https://youtu.be/BJP_44fPrus) [/статья](https://aristov.tech/blog/view-v-postgresql/)
 25. MATERIALIZED VIEW
 26. INDEXES
 27. ROLES
