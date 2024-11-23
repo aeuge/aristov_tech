@@ -30,8 +30,8 @@
 22. [GROUP BY](https://youtu.be/ADl4ezH9Tkg) [/статья](https://aristov.tech/blog/group-by-v-postgresql/)
 23. [HAVING](https://youtu.be/U591EZV79G4) [/статья](https://aristov.tech/blog/having-v-postgresql/)
 24. [VIEW](https://youtu.be/BJP_44fPrus) [/статья](https://aristov.tech/blog/view-v-postgresql/)
-25. [MATERIALIZED VIEW](https://youtu.be/3CgB5FQv4Xo) [/статья](https://aristov.tech/blog/materialized-view-v-postgresql/)
-26. INDEXES
+25. [MATERIALIZED VIEW](https://youtu.be/3CgB5FQv4Xo) [/статья](https://aristov.tech/blog/materialized-view-v-postgresql/) 
+26. [INDEXES](https://youtu.be/nZZ-6dylHm0) [/статья](https://aristov.tech/blog/indexes-v-postgresql/)
 27. ROLES
 28. Функции работы с датой/строками/цифрами
 29. MVCC
