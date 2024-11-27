@@ -32,8 +32,8 @@
 24. [VIEW](https://youtu.be/BJP_44fPrus) [/статья](https://aristov.tech/blog/view-v-postgresql/)
 25. [MATERIALIZED VIEW](https://youtu.be/3CgB5FQv4Xo) [/статья](https://aristov.tech/blog/materialized-view-v-postgresql/) 
 26. [INDEXES](https://youtu.be/nZZ-6dylHm0) [/статья](https://aristov.tech/blog/indexes-v-postgresql/)
-27. ROLES
-28. Функции работы с датой/строками/цифрами
+27. [ROLES](https://aristov.tech/blog/roles-v-postgresql/) [/статья](https://youtu.be/1l89bFsBiHs)
+28. [Функции работы с датой/строками/цифрами](https://aristov.tech/blog/funkczii-dlya-raboty-s-dannymi-v-postgresql/) [/статья](https://youtu.be/T3nYIP7XgiQ)
 29. MVCC
 30. Уровни изоляции транзакций
 
