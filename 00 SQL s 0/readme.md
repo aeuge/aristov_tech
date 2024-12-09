@@ -34,6 +34,6 @@
 26. [INDEXES](https://youtu.be/nZZ-6dylHm0) [/статья](https://aristov.tech/blog/indexes-v-postgresql/)
 27. [ROLES](https://youtu.be/1l89bFsBiHs) [/статья](https://aristov.tech/blog/roles-v-postgresql/) 
 28. [Функции работы с датой/строками/цифрами](https://youtu.be/T3nYIP7XgiQ) [/статья](https://aristov.tech/blog/funkczii-dlya-raboty-s-dannymi-v-postgresql/)
-29. MVCC
+29. [MVCC](https://youtu.be/jPhkuk7Dxmg) [/статья] (https://aristov.tech/blog/mvcc-v-postgresql/)
 30. Уровни изоляции транзакций
 
