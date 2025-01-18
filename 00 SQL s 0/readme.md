@@ -37,3 +37,4 @@
 29. [MVCC](https://youtu.be/jPhkuk7Dxmg) [/статья](https://aristov.tech/blog/mvcc-v-postgresql/)
 30. [Уровни изоляции транзакций](https://youtu.be/FToh94w5EZw) [/статья](https://aristov.tech/blog/urovni-izolyaczii-tranzakczij-v-postgresql/)
 
+
