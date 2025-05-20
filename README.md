@@ -1,5 +1,5 @@
 #### Открытые вебинары проекта [aristov.tech](https://aristov.tech/). 
-#### Видеозаписи доступны на [youtube](ttps://www.youtube.com/@aristovtech), [rutube](https://www.youtube.com/@aristovtech), [vkvideo](https://vkvideo.ru/video-212716752_456239112)
+#### Видеозаписи доступны на [youtube](https://www.youtube.com/@aristovtech), [rutube](https://www.youtube.com/@aristovtech), [vkvideo](https://vkvideo.ru/video-212716752_456239112)
 
 1. [01 ОУ Уровни изоляции транзакций](https://aristov.tech/blog/urovni-izolyaczii-tranzakczij/)
 2. [02 ОУ Особенности MVCC PostgreSQL](https://aristov.tech/blog/tranzakczii-i-mvcc/)
