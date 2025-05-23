@@ -7,4 +7,4 @@
 4. [04 ОУ Сравнение PostgreSQL и NoSQL решений](https://aristov.tech/blog/sravnenie-postgresql-i-nosql-reshenij/)
 5. [05 ОУ Pgbouncer - connecting clients](https://aristov.tech/blog/pgbouncer-connecting-clients-v-postgresql/)
 6. [06 ОУ Troubleshooting PostgreSQL Indexes](https://aristov.tech/blog/troubleshooting-postgresql-indexes/)
-7. 07 ОУ Patroni in kubernetes
+7. [07 ОУ Patroni in kubernetes](https://aristov.tech/blog/patroni-in-k8s/)
