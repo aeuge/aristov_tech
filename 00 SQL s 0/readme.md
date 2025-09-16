@@ -1,8 +1,8 @@
 ## Курс SQL с нуля и до джуна.
-#### Author https://aristov.tech
+#### Author [Аристов Евгений](https://aristov.tech)
 #### Продолжительность 30 тем ~ 20 ак.часов
 #### Формат: запись лекция без расшифровки в группе для обучения https://t.me/sql_s_0 
-#### Темы будут выкладываться ~ по 1 в неделю на [ютубе](https://www.youtube.com/@aristovtech)/[рутубе](https://rutube.ru/channel/35256873/)/[ВКВидео](https://vk.com/video/@public212716752), в виде статей в моём блоге. Ниже приведены ссылки
+#### Занятия доступны на [ютубе](https://www.youtube.com/@aristovtech)/[рутубе](https://rutube.ru/channel/35256873/)/[ВКВидео](https://vk.com/video/@public212716752), в виде статей в моём [блоге](https://aristov.tech/blog/). Ниже приведены ссылки
 #### Презентации к выложенным урокам находятся в каталоге [presentation](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/presentation), исходники в каталоге [ishod](https://github.com/aeuge/aristov_tech/tree/main/00%20SQL%20s%200/ishod)
 
 ### План
