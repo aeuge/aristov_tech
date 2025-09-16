@@ -1,6 +1,11 @@
-#### Открытые вебинары проекта [aristov.tech](https://aristov.tech/). 
+#### Открытые курсы и вебинары проекта [aristov.tech](https://aristov.tech/). 
 #### Видеозаписи доступны на [youtube](https://www.youtube.com/@aristovtech), [rutube](https://www.youtube.com/@aristovtech), [vkvideo](https://vkvideo.ru/video-212716752_456239112)
 
+#### Открытые курсы - ссылки на видео, презентации и исходники
+1. [SQL c 0 за 30 лекций](/00%20SQL%20s%200/)
+2. [pl/pg SQL в PostgreSQL за 31 лекцию](/01%20SQL_PGSQL/)
+
+#### Открытые вебинары
 1. [01 ОУ Уровни изоляции транзакций](https://aristov.tech/blog/urovni-izolyaczii-tranzakczij/)
 2. [02 ОУ Особенности MVCC PostgreSQL](https://aristov.tech/blog/tranzakczii-i-mvcc/)
 3. [03 ОУ idle VS idle in transaction](https://aristov.tech/blog/idle-vs-idle-in-transaction/)
