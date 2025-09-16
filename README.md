@@ -1,5 +1,5 @@
 #### Открытые курсы и вебинары проекта [aristov.tech](https://aristov.tech/). 
-#### Видеозаписи доступны на [youtube](https://www.youtube.com/@aristovtech), [rutube](https://www.youtube.com/@aristovtech), [vkvideo](https://vkvideo.ru/video-212716752_456239112)
+#### Видеозаписи доступны на [youtube](https://www.youtube.com/@aristovtech), [rutube](https://www.youtube.com/@aristovtech), [vkvideo](https://vkvideo.ru/@aristov.tech)
 
 #### Открытые курсы - ссылки на видео, презентации и исходники
 1. [SQL c 0 за 30 лекций](/00%20SQL%20s%200/)
