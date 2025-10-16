@@ -11,7 +11,7 @@
 
 ### План
 01. [Серверное программирование. Назначение и основные особенности](https://youtu.be/qYunWQsaFhA) [/статья](https://aristov.tech/blog/servernoe-programmirovanie-v-postgresql/)
-02. Структура функции
+02. [Структура функции](https://youtu.be/sJxljx3Ac6c) [/статья](https://aristov.tech/blog/struktura-funkczii/)
 03. Различие SQL, PL/pgSQL, PL/Python
 04. Команды возврата из функции
 05. Переменные, приоритеты и основные типы данных
