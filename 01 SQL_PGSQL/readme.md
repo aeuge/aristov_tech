@@ -12,7 +12,7 @@
 03. [Различие SQL, PL/pgSQL, PL/Python](https://youtu.be/XR_ZC81tX-E) [/статья](https://aristov.tech/blog/razlichie-sql-pl-pgsql-pl-python/)
 04. [Команды возврата из функции](https://youtu.be/7OTkw6FbRkA) [/статья](https://aristov.tech/blog/komandy-vozvrata-iz-funkczii/)
 05. [Переменные, приоритеты и основные типы данных](https://youtu.be/25u2Z5k5k7c)  [/статья](https://aristov.tech/blog/peremennye-prioritety-i-osnovnye-tipy-dannyh/)
-06. Понятие блока
+06. [Понятие блока](https://youtu.be/WL7yhUPIjpc)  [/статья](https://aristov.tech/blog/ponyatie-bloka/)
 07. Операторы ветвления
 08. Переменная типа record
 09. Использование команды SELECT INTO
