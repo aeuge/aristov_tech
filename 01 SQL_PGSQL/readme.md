@@ -15,7 +15,7 @@
 06. [Понятие блока](https://youtu.be/WL7yhUPIjpc) [/статья](https://aristov.tech/blog/ponyatie-bloka/)
 07. [Операторы ветвления](https://youtu.be/vA8FMTzlliA) [/статья](https://aristov.tech/blog/operatory-vetvleniya-if-case/)
 08. [Переменная типа record](https://youtu.be/cEPrk_1BFEo) [/статья](https://aristov.tech/blog/peremennaya-tipa-record/)
-09. Использование команды SELECT INTO
+09. [Использование команды SELECT INTO](https://youtu.be/cv9mO_j5H0M) [/статья](https://aristov.tech/blog/ispolzovanie-komandy-select-into/)
 10. Возвращение множеств (setof) и таблиц (table)
 11. Категории изменчивости функций
 12. Составные типы данных и вычисляемые поля
