@@ -23,7 +23,7 @@ SELECT itemno, extended_sales(itemno) from sales;
 -- Пример использования RETURN NEXT:
 drop table if exists foo;
 CREATE TABLE foo (fooid INT, foosubid INT, fooname TEXT);
--- !!! под какотом создаётся такой же скрытый тип данных !!!
+-- !!! под капотом создаётся такой же скрытый тип данных !!!
 INSERT INTO foo VALUES (1, 2, 'three');
 INSERT INTO foo VALUES (4, 5, 'six');
 
