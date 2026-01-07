@@ -18,7 +18,7 @@
 09. [Использование команды SELECT INTO](https://youtu.be/cv9mO_j5H0M) [/статья](https://aristov.tech/blog/ispolzovanie-komandy-select-into/)
 10. [Возвращение множеств (setof) и таблиц (table)](https://youtu.be/P9jEMQlfa6c) [/статья](https://aristov.tech/blog/vozvrashhenie-mnozhestv-setof-i-tablicztable/)
 11. [Категории изменчивости функций](https://youtu.be/WRmtBITY_HQ) [/статья](https://aristov.tech/blog/kategorii-izmenchivosti-funkczij/)
-12. Составные типы данных и вычисляемые поля
+12. [Составные типы данных и вычисляемые поля](https://youtu.be/xbaz2Q4aFTU) [/статья](https://aristov.tech/blog/sostavnye-tipy-dannyh-i-vychislyaemye-polya/)
 13. Использование операторов
 14. Использование входных и выходных параметров, передача массива
 15. Использование кортежей
