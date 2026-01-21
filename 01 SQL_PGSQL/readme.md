@@ -19,7 +19,7 @@
 10. [Возвращение множеств (setof) и таблиц (table)](https://youtu.be/P9jEMQlfa6c) [/статья](https://aristov.tech/blog/vozvrashhenie-mnozhestv-setof-i-tablicztable/)
 11. [Категории изменчивости функций](https://youtu.be/WRmtBITY_HQ) [/статья](https://aristov.tech/blog/kategorii-izmenchivosti-funkczij/)
 12. [Составные типы данных и вычисляемые поля](https://youtu.be/xbaz2Q4aFTU) [/статья](https://aristov.tech/blog/sostavnye-tipy-dannyh-i-vychislyaemye-polya/)
-13. Использование операторов
+13. [Использование операторов](https://youtu.be/srHg0feAqZg) [/статья](https://aristov.tech/blog/ispolzovanie-operatorov/)
 14. Использование входных и выходных параметров, передача массива
 15. Использование кортежей
 16. Перегрузка функций
