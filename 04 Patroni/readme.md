@@ -1,6 +1,6 @@
 ## Курс Patroni
 #### Author https://aristov.tech
-#### Входит в (линейку курсов для B2B)[https://aristov.tech/blog/linejka-kursov-dlya-b2b/]
+#### Входит в [линейку курсов для B2B](https://aristov.tech/blog/linejka-kursov-dlya-b2b/)
 #### Формат: онлайн-лекции 
 #### Продолжительность одной лекции: 2 ак.часа
 #### Курс рассчитан на 5 лекций
