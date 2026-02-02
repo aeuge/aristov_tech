@@ -46,7 +46,7 @@ DevOps-инженеры: развертывание и управление Patr
 1. Построение HA кластера Patroni часть 1
   *HA-кластера PostgreSQL
 
-*Разбор архитектуры ETCD/Patroni/Pgbouncer/HAProxy/KeepaliveD
+  *Разбор архитектуры ETCD/Patroni/Pgbouncer/HAProxy/KeepaliveD
   +Критичные параметры конфигурации
   -Траблшутинг ETCD
   *Работа на стенде в облачном исполнении
