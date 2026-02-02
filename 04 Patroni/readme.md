@@ -43,8 +43,9 @@ DevOps-инженеры: развертывание и управление Patr
 
 
 #### Программа курса по patroni (10.ак.ч):
-01. Построение HA кластера Patroni часть 1 
-  *HA-кластера PostgreSQL 
+1. Построение HA кластера Patroni часть 1
+  *HA-кластера PostgreSQL
+
 *Разбор архитектуры ETCD/Patroni/Pgbouncer/HAProxy/KeepaliveD
   +Критичные параметры конфигурации
   -Траблшутинг ETCD
