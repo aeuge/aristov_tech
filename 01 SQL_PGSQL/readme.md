@@ -21,7 +21,7 @@
 12. [Составные типы данных и вычисляемые поля](https://youtu.be/xbaz2Q4aFTU) [/статья](https://aristov.tech/blog/sostavnye-tipy-dannyh-i-vychislyaemye-polya/)
 13. [Использование операторов](https://youtu.be/srHg0feAqZg) [/статья](https://aristov.tech/blog/ispolzovanie-operatorov/)
 14. [Использование входных и выходных параметров, передача массива](https://youtu.be/cqMEwAutrrg) [/статья](https://aristov.tech/blog/ispolzovanie-vhodnyh-i-vyhodnyh-parametrov-peredacha-massiva/)
-15. Использование кортежей
+15. [Использование кортежей](https://youtu.be/_Y5bHNqm_P0) [/статья](https://aristov.tech/blog/ispolzovanie-kortezhej/)
 16. Перегрузка функций
 17. Полиморфизм функций
 18. Процедуры
