@@ -23,7 +23,7 @@
 14. [Использование входных и выходных параметров, передача массива](https://youtu.be/cqMEwAutrrg) [/статья](https://aristov.tech/blog/ispolzovanie-vhodnyh-i-vyhodnyh-parametrov-peredacha-massiva/)
 15. [Использование кортежей](https://youtu.be/_Y5bHNqm_P0) [/статья](https://aristov.tech/blog/ispolzovanie-kortezhej/)
 16. [Перегрузка функций](https://youtu.be/KdkF4v2Hh24) [/статья](https://aristov.tech/blog/peregruzka-funkczij/)
-17. Полиморфизм функций
+17. [Полиморфизм функций](https://youtu.be/OMIjyBKE7O4) [/статья](https://aristov.tech/blog/polimorfizm-funkczij/)
 18. Процедуры
 19. Анонимные процедуры
 20. Транзакции в серверном программировании
