@@ -24,7 +24,7 @@
 15. [Использование кортежей](https://youtu.be/_Y5bHNqm_P0) [/статья](https://aristov.tech/blog/ispolzovanie-kortezhej/)
 16. [Перегрузка функций](https://youtu.be/KdkF4v2Hh24) [/статья](https://aristov.tech/blog/peregruzka-funkczij/)
 17. [Полиморфизм функций](https://youtu.be/OMIjyBKE7O4) [/статья](https://aristov.tech/blog/polimorfizm-funkczij/)
-18. [Процедуры](https://youtu.be/dheGfM0vvIQ) [/статья]https://aristov.tech/blog/proczedury/)
+18. [Процедуры](https://youtu.be/dheGfM0vvIQ) [/статья](https://aristov.tech/blog/proczedury/)
 19. Анонимные процедуры
 20. Транзакции в серверном программировании
 21. Использование search_path 
