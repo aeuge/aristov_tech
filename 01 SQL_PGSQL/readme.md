@@ -26,7 +26,7 @@
 17. [Полиморфизм функций](https://youtu.be/OMIjyBKE7O4) [/статья](https://aristov.tech/blog/polimorfizm-funkczij/)
 18. [Процедуры](https://youtu.be/dheGfM0vvIQ) [/статья](https://aristov.tech/blog/proczedury/)
 19. [Анонимные процедуры](https://youtu.be/5pfmsRC5dh0) [/статья](https://aristov.tech/blog/anonimnye-proczedury/)
-20. [Транзакции в серверном программировании](https://youtu.be/rmZL-K3qjh0) [/статья](https://aristov.tech/blog/tranzakczii-v-servernom-programmirovanii/)
+20. [Транзакции в серверном программировании](https://youtu.be/_tAEllxzSrY) [/статья](https://aristov.tech/blog/tranzakczii-v-servernom-programmirovanii/)
 21. Использование search_path 
 22. SQL инъекции
 23. Динамический SQL
