@@ -1,6 +1,6 @@
 ## Курс SQL 2.0 PL/pgSQL
 #### Автор - Аристов Евгений https://aristov.tech
-#### Сентябрь-октябрь 2025
+#### Октябрь 2025
 #### Формат: онлайн-лекции
 #### Продолжительность одной лекции: 1.5-2 часа, 6 лекций на 31 тему
 #### Курс выкладывается по одной теме в неделю — на блоге / YouTube / Rutube /VK Video. Всего 31 тема, ориентировочно завершится в октябре 2026 года.
@@ -28,7 +28,7 @@
 19. [Анонимные процедуры](https://youtu.be/5pfmsRC5dh0) [/статья](https://aristov.tech/blog/anonimnye-proczedury/)
 20. [Транзакции в серверном программировании](https://youtu.be/_tAEllxzSrY) [/статья](https://aristov.tech/blog/tranzakczii-v-servernom-programmirovanii/)
 21. [Использование search_path](https://youtu.be/sI-ztQkKB40) [/статья](https://aristov.tech/blog/ispolzovanie-search_path/)
-22. SQL инъекции
+22. [SQL инъекции](https://youtu.be/sOYrMsWZGks) [/статья](https://aristov.tech/blog/sql-inekczii/)
 23. Динамический SQL
 24. Циклы
 25. Исключения
