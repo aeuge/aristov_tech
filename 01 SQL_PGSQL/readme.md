@@ -30,7 +30,7 @@
 21. [Использование search_path](https://youtu.be/sI-ztQkKB40) [/статья](https://aristov.tech/blog/ispolzovanie-search_path/)
 22. [SQL инъекции](https://youtu.be/sOYrMsWZGks) [/статья](https://aristov.tech/blog/sql-inekczii/)
 23. [Динамический SQL](https://youtu.be/wQjtagbaHNs) [/статья](https://aristov.tech/blog/dinamicheskij-sql/)
-24. Циклы
+24. [Циклы](https://youtu.be/XQGYMQE8p-U) [/статья](https://aristov.tech/blog/czikly/)
 25. Исключения
 26. Обработка ошибок
 27. Функции для работы с массивами, в т.ч. многомерными
