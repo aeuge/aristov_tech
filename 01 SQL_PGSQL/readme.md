@@ -31,7 +31,7 @@
 22. [SQL инъекции](https://youtu.be/sOYrMsWZGks) [/статья](https://aristov.tech/blog/sql-inekczii/)
 23. [Динамический SQL](https://youtu.be/wQjtagbaHNs) [/статья](https://aristov.tech/blog/dinamicheskij-sql/)
 24. [Циклы](https://youtu.be/XQGYMQE8p-U) [/статья](https://aristov.tech/blog/czikly/)
-25. Исключения
+25. [Исключения](https://youtu.be/3xP0z5iNbCQ) [/статья](https://aristov.tech/blog/isklyucheniya/)
 26. Обработка ошибок
 27. Функции для работы с массивами, в т.ч. многомерными
 28. DML триггеры
