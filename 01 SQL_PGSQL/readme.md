@@ -35,6 +35,6 @@
 26. [Обработка ошибок](https://youtu.be/IiEbIun2diQ) [/статья](https://aristov.tech/blog/obrabotka-oshibok/)
 27. [Функции для работы с массивами, в т.ч. многомерными](https://youtu.be/xotsYyfrFYU) [/статья](https://aristov.tech/blog/funkczii-dlya-raboty-s-massivami-v-t-ch-mnogomernymi/)
 28. [DML триггеры](https://youtu.be/znbJuhBO66A) [/статья](https://aristov.tech/blog/dml-triggery/)
-29. DDL триггеры
+29. [DDL триггеры](https://youtu.be/8Ata5hnZfDA) [/статья](https://aristov.tech/blog/ddl-triggery/)
 30. Курсоры
 31. Production cases
